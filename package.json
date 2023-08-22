@@ -15,7 +15,8 @@
     "build": "rollup -c",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "exp": "vite"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",
@@ -25,6 +26,7 @@
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vite": "^4.4.9"
   }
 }
