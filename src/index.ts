@@ -100,35 +100,6 @@ class Observe<T extends Record<string, any>> {
     }
 }
 
-/**
- * 需要监听数据变化，然后处理对应回调函数
- */
-class SE<T extends {}> {
-    data: T;
-
-    constructor(data: T) {
-        this.data = observe(data);
-    }
-
-    effect(fn: FN) {
-        TARGET.push(fn);
-        DEP_WEAK_MAP.set(fn, []);
-        fn();
-        TARGET.pop();
-        return function() {
-            const values = DEP_WEAK_MAP.get(fn);
-            values!.forEach(val => {
-                const index = val.list.indexOf(fn);
-                val.list.splice(index, 1);
-            });
-        }
-    }
-
-    // private watch(keys: FN, fn: FN) {
-
-    // }
-}
-
 export const state = <T extends {}>(data: T) => {
     return observe(data)
 }
@@ -167,9 +138,4 @@ export function setProps<T>(obj: T, props: Props<T>) {
 		    obj[key] = typeof value === 'function' ? value() : value! as any
         })
 	}
-}
-
-
-export function muou<T extends {}>(data: T) {
-    return new SE(data);
 }

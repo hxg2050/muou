@@ -15,15 +15,15 @@ yarn add muou
 #### 快速上手
 
 ```ts
-import { muou } from 'muou';
+import { state, effect } from 'muou';
 
 // 初始化一个可检测式数据
-const store = muou({
+const store = state({
     value: {},
     step: 1
 });
 // 当effect内数据发生变化时触发
-const stopEffect = store.effect(() => {
+const stopEffect = effect(() => {
     if (store.data.step == 2) {
         console.log(store.data.value);
     }
