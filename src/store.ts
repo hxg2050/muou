@@ -6,7 +6,7 @@ const list:Record<string, any> = {};
 export const defineStore = <T extends {}>(id: string, fn: () => T): DeepReadonly<T> => {
     if (!list[id]) {
         list[id] = state({});
-        const res = state(fn());
+        const res = fn();
         for (let p in res) {
             let item = res[p];
             if (typeof item === 'function') {

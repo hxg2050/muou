@@ -12,7 +12,7 @@ npm install muou
 yarn add muou
 ```
 
-#### 快速上手
+### 快速上手
 
 ```ts
 import { state, effect } from 'muou';
@@ -41,4 +41,42 @@ setTimeout(() => {
     // 停止数据响应
     stopEffect();
 }, 1000);
+```
+
+### 状态管理
+```ts
+import { defineStore, ref, computed } from 'muou';
+
+export default defineStore('user', () => {
+    const id = ref(0);
+    const username = ref('');
+
+    const login = async (uname: string, password: string) => {
+        id.value = 1000;
+        username.value = uname;
+        return data;
+    }
+
+    // 计算属性
+    const idname = computed(() => {
+        return id.value + username.value
+    });
+
+    return {
+        id,
+        username,
+        idname,
+        login
+    };
+});
+```
+其他地方使用状态
+```ts
+import user from './user';
+
+effect(() => {
+    console.log(user.idname);
+})
+// 模拟调用登陆方法
+user.login('username', '123456');
 ```
