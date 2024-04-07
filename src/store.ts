@@ -1,6 +1,6 @@
 import { state, effect } from './state'
 type DeepReadonly<T> = {
-    readonly [P in keyof T]: DeepReadonly<T[P] extends Ref<infer U> ? U : T[P]>;
+    readonly [P in keyof T]: T[P] extends Ref<infer U> ? DeepReadonly<U> : T[P];
 };
 const list:Record<string, any> = {};
 export const defineStore = <T extends {}>(id: string, fn: () => T): DeepReadonly<T> => {
