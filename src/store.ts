@@ -22,7 +22,7 @@ export const defineStore = <T extends {}>(id: string, fn: () => T): DeepReadonly
     return list[id];
 }
 
-class Ref<T> {
+export class Ref<T> {
     constructor(public value: T|null = null) {
 
     }
