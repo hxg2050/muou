@@ -1,8 +1,8 @@
 # 提线木偶
 
-[![publish](https://github.com/hxg2050/hease/actions/workflows/publish.yml/badge.svg)](https://github.com/hxg2050/muou/actions/workflows/publish.yml)
-[![npm-downloads](https://img.shields.io/npm/dm/hease.svg)](https://www.npmjs.com/package/muou)
-[![npm-version](https://img.shields.io/npm/v/hease.svg)](https://www.npmjs.com/package/muou)  
+[![publish](https://github.com/hxg2050/muou/actions/workflows/publish.yml/badge.svg)](https://github.com/hxg2050/muou/actions/workflows/publish.yml)
+[![npm-downloads](https://img.shields.io/npm/dm/muou.svg)](https://www.npmjs.com/package/muou)
+[![npm-version](https://img.shields.io/npm/v/muou.svg)](https://www.npmjs.com/package/muou)  
 
 可方便快捷的创建数据之间的变化响应，当数据发生变化时自动执行相关逻辑。
 比如在更新视图时非常有用，只需要建立好视图与数据之间的关系。后面不再关心视图，而只需要处理好数据即可实现自动更新视图。
