@@ -4,17 +4,16 @@ const DEP_WEAK_MAP = new WeakMap<any, Dep[]>();
 let TARGET: any[] = [];
 
 class Dep {
-    static target: any;
-    list: any[] = [];
+    list = new Set<any>();
     timeout?: NodeJS.Timeout;
     add(cb: any[]) {
         if (this.has(cb)) {
             return;
         }
-        this.list.push(cb);
+        this.list.add(cb);
     }
     has(val: any) {
-        return this.list.indexOf(val) != -1;
+        return this.list.has(val);
     }
 
     notify() {
@@ -112,11 +111,25 @@ export const effect = (fn: FN) => {
     return () => {
         const values = DEP_WEAK_MAP.get(fn);
         values!.forEach(val => {
-            const index = val.list.indexOf(fn);
-            val.list.splice(index, 1);
+            val.list.delete(fn)
         });
     }
 }
+
+export const batchEffect = () => {
+    const list: FN[] = [];
+    return {
+        effect(fn: FN) {
+            const stop = effect(fn);
+            list.push(stop);
+            return stop;
+        },
+        clear() {
+            list.forEach(val => val())
+        }
+    }
+}
+
 
 export type Props<T> = {
     [P in keyof T]?: Props<T[P]> | (() => Props<T[P]>);
