@@ -139,16 +139,16 @@ export type Props<T> = {
  * @param obj 
  * @param props 
  */
-export function setProps<T>(obj: T, props: Props<T>) {
-	for (let key in props) {
-		const value = props[key];
-		if (typeof value === 'object') {
-			setProps(obj[key], value!);
-			continue;
-		}
+// export function setProps<T>(obj: T, props: Props<T>) {
+// 	for (let key in props) {
+// 		const value = props[key];
+// 		if (typeof value === 'object') {
+// 			setProps(obj[key], value!);
+// 			continue;
+// 		}
 
-        effect(() => {
-		    obj[key] = typeof value === 'function' ? value() : value! as any
-        })
-	}
-}
+//         effect(() => {
+// 		    obj[key] = typeof value === 'function' ? value() : value! as any
+//         })
+// 	}
+// }

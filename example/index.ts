@@ -1,4 +1,4 @@
-import { effect, setProps, state } from '../src/index';
+import { effect, state } from '../src/index';
 import { checkbox } from './checkbox';
 
 // 初始化一个可检测式数据
