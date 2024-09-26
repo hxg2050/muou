@@ -49,16 +49,3 @@ setTimeout(() => {
         checked: false
     });
 }, 1000)
-
-const s = defineStore(() => {
-    const a = ref(1);
-    return {
-        a
-    };
-});
-
-effect(() => {
-    console.log(s.a)
-})
-s.a = 2;
-console.log(s.a instanceof Ref);

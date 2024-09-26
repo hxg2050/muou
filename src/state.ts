@@ -28,12 +28,14 @@ class Dep {
     }
 }
 
-function observe<T extends Record<string, any>>(data: T) {
+function observe<T extends Record<string, any>>(data: T, deep = true) {
     if (!data || 'object' !== typeof data) return data;
 
-    let keys = Reflect.ownKeys(data) as (keyof T)[];
-    for (let key of keys) {
-        data[key] = observe(data[key]);
+    if (deep) {
+        const keys = Reflect.ownKeys(data) as (keyof T)[];
+        for (const key of keys) {
+            data[key] = observe(data[key]);
+        }
     }
     return new Observe(data).data;
 }
@@ -99,8 +101,8 @@ class Observe<T extends Record<string, any>> {
     }
 }
 
-export const state = <T extends {}>(data: T) => {
-    return observe(data)
+export const state = <T extends {}>(data: T, deep = true) => {
+    return observe(data, deep)
 }
 
 export const effect = (fn: FN) => {
