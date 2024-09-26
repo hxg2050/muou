@@ -17,14 +17,14 @@ class Dep {
     }
 
     notify() {
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
+        // clearTimeout(this.timeout);
+        // this.timeout = setTimeout(() => {
             this.list.forEach(value => {
                 TARGET.push(value);
                 value();
                 TARGET.pop();
             });
-        });
+        // });
     }
 }
 
@@ -119,6 +119,7 @@ export const effect = (fn: FN) => {
 export const batchEffect = () => {
     const list: FN[] = [];
     return {
+        list,
         effect(fn: FN) {
             const stop = effect(fn);
             list.push(stop);
@@ -126,10 +127,10 @@ export const batchEffect = () => {
         },
         clear() {
             list.forEach(val => val())
+            list.length = 0;
         }
     }
 }
-
 
 export type Props<T> = {
     [P in keyof T]?: Props<T[P]> | (() => Props<T[P]>);

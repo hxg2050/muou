@@ -2,24 +2,20 @@ import { state, effect } from './state'
 type DeepReadonly<T> = {
     readonly [P in keyof T]: T[P] extends Ref<infer U> ? DeepReadonly<U> : T[P];
 };
-const list:Record<string, any> = {};
-export const defineStore = <T extends {}>(id: string, fn: () => T): DeepReadonly<T> => {
-    if (!list[id]) {
-        list[id] = state({});
-        const res = fn();
-        for (let p in res) {
-            let item = res[p];
-            if (typeof item === 'function') {
-                list[id][p] = item;
-            } else if (item instanceof Ref) {
-                const data = state(item);
-                effect(() => {
-                    list[id][p] = data.value;
-                });
-            }
+export const defineStore = <T extends {}>(fn: () => T): DeepReadonly<T> => {
+    const store = state<any>({});
+    const res = fn();
+    for (let p in res) {
+        let item = res[p];
+        if (typeof item === 'function') {
+            store[p] = item;
+        } else if (item instanceof Ref) {
+            effect(() => {
+                store[p] = item.value;
+            });
         }
     }
-    return list[id];
+    return store;
 }
 
 export class Ref<T> {
@@ -34,7 +30,7 @@ export const ref = <T>(value: T) => {
 }
 
 export const computed = <T>(fn: () => T): Ref<T> => {
-    let value = ref<T|null>(null);
+    let value = ref<T | null>(null);
     effect(() => {
         value.value = fn();
     });
