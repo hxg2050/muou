@@ -6,7 +6,7 @@
 
 可方便快捷的创建数据之间的变化响应，当数据发生变化时自动执行相关逻辑。
 比如在更新视图时非常有用，只需要建立好视图与数据之间的关系。后面不再关心视图，而只需要处理好数据即可实现自动更新视图。
-`注意：考虑性能方面采用了宏任务处理effect，所以当数据在同一时刻发生频繁改变，effect只会执行一次`
+`注意：考虑性能方面采用了微任务处理effect，所以当数据在同一时刻发生频繁改变，effect只会执行一次`
 # 安装
 
 ```sh
@@ -27,7 +27,7 @@ const store = state({
     value: {},
     step: 1
 });
-// 当effect内数据发生变化时触发
+// 当effect内数据发生变化时触发，可传入第二个参数为{sync: true}来进行同步监听
 const stopEffect = effect(() => {
     if (store.data.step == 2) {
         console.log(store.data.value);
