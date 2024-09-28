@@ -5,18 +5,19 @@ describe('Core', () => {
 
 
         const testStore = defineStore(() => {
-            
+
+            const arr = ref([{
+                value: 1
+            }, {
+                value: 2
+            }]);
             const store = ref({
                 id: 1,
                 obj: {
                     number: 1
                 },
                 other: 'a',
-                arr: [{
-                    value: 1
-                }, {
-                    value: 2
-                }]
+                arr: arr.value
             });
             store.value.arr.length = 2;
 
@@ -34,7 +35,8 @@ describe('Core', () => {
             }
 
             const nextStep = () => {
-                step.value ++;
+                step.value++;
+                store.value.arr.length = 0;
             }
             const setId = (id: number) => {
                 store.value.id = id;
@@ -65,17 +67,18 @@ describe('Core', () => {
                 testStore.nextStep();
                 bf.clear();
             }
-            effect(() => {
-                expect(testStore.store.id).toBeLessThan(3);
-            })
         })
 
+        effect(() => {
+            expect(testStore.store.id).toBeLessThan(3);
+        }, {
+            sync: true
+        })
         setTimeout(() => {
             testStore.setOther('b');
-            testStore.store.arr.length = 0;
             testStore.nextStep();
             testStore.setId(2);
         })
-        
+
     });
 })

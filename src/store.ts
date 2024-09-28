@@ -1,17 +1,17 @@
-import { state, effect } from './state'
+import { state } from './state'
 type DeepReadonly<T> = {
-    readonly [P in keyof T]: T[P] extends Ref<infer U> ? DeepReadonly<U> : T[P];
+    readonly [P in keyof T]: T[P] extends Ref<infer U> ? DeepReadonly<U> :  T[P] extends Function ? T[P] : DeepReadonly<T[P]>;
 };
 export const defineStore = <T extends {}>(fn: () => T): DeepReadonly<T> => {
-    const store: Record<string, any> = state({});
+    const store: Record<string, unknown> = {};
     const res = fn();
     for (const p in res) {
-        let item = res[p];
+        const item = res[p];
         if (item instanceof Ref) {
-            effect(() => {
-                store[p] = (<Ref<any>>item).value;
-            }, {
-                sync: true
+            Object.defineProperty(store, p, {
+                get() {
+                    return (<Ref<any>>item).value;
+                }
             })
         } else {
             store[p] = item;
@@ -32,11 +32,11 @@ export const ref = <T>(value: T) => {
 }
 
 export const computed = <T>(fn: () => T): Ref<T> => {
-    let value = ref<T | null>(null);
-    effect(() => {
-        value.value = fn();
-    }, {
-        sync: true
-    });
-    return value as Ref<T>;
+    const data = new Ref(null);
+    Object.defineProperty(data, 'value', {
+        get() {
+            return fn();
+        }
+    })
+    return data as Ref<T>;
 }
