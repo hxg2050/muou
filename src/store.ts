@@ -3,14 +3,15 @@ type DeepReadonly<T> = {
     readonly [P in keyof T]: T[P] extends Ref<infer U> ? DeepReadonly<U> : T[P];
 };
 export const defineStore = <T extends {}>(fn: () => T): DeepReadonly<T> => {
-    const store: Record<string, any> = state({}, false);
+    const store: Record<string, any> = state({});
     const res = fn();
     for (const p in res) {
         let item = res[p];
         if (item instanceof Ref) {
             effect(() => {
-                console.error(p);
                 store[p] = (<Ref<any>>item).value;
+            }, {
+                sync: true
             })
         } else {
             store[p] = item;
@@ -34,6 +35,8 @@ export const computed = <T>(fn: () => T): Ref<T> => {
     let value = ref<T | null>(null);
     effect(() => {
         value.value = fn();
+    }, {
+        sync: true
     });
     return value as Ref<T>;
 }

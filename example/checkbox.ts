@@ -10,7 +10,7 @@ export const checkbox = (props: any) => {
     })
     cb.addEventListener('click', (e) => {
         e.preventDefault();
-    });
+    }, false);
     root.addEventListener('click', () => {
         props.checked = !props.checked;
     })
